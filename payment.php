@@ -252,8 +252,8 @@ $delivery=$total-$itemtotal;
     if(isset($_POST['savenew'])){
         $query="update delivery_address set selected=0 where user_id='$_SESSION[user_id]'";
         $db_handle->runQuery($query);
-        $query="insert into delivery_address(id,user_id,name,phone,pin,locality,address,city,state,landmark,alternate_phone,type,selected)
-        values(Null,'$_SESSION[user_id]','$_POST[name]','$_POST[phone]','$_POST[pin]','$_POST[locality]','$_POST[address]','$_POST[city]',
+        $query="insert into delivery_address(user_id,name,phone,pin,locality,address,city,state,landmark,alternate_phone,type,selected)
+        values('$_SESSION[user_id]','$_POST[name]','$_POST[phone]','$_POST[pin]','$_POST[locality]','$_POST[address]','$_POST[city]',
         '$_POST[state]','$_POST[landmark]','$_POST[altphone]','$_POST[type]',1)";
         if($result=$db_handle->runQuery($query)){
             echo"<script>alert('address added successfully please refersh')</script>";
@@ -297,13 +297,13 @@ $delivery=$total-$itemtotal;
             include('order_id.php');
             $item=$_SESSION['cart'];
             $order_id=$id;
-            $query="insert into order_address(id,order_id,name,phone,pin,locality,address,city,state,landmark,alternate_phone,type) values(Null,
+            $query="insert into order_address(order_id,name,phone,pin,locality,address,city,state,landmark,alternate_phone,type) values(
             '".$order_id."','".$delivery_address['name']."','".$delivery_address['phone']."','".$delivery_address['pin']."',
             '".$delivery_address['locality']."','".$delivery_address['address']."','".$delivery_address['city']."','".$delivery_address['state']."',
             '".$delivery_address['landmark']."','".$delivery_address['alternate_phone']."','".$delivery_address['type']."')";
             $db_handle->runQuery($query);
-            $query="insert into customer_order(id,order_id,total,delivery_charge,itemtotal,date,time,status,user_id,payment_method,txnid) 
-            values(Null,'".$order_id."','".$total."','".$delivery."','".$itemtotal."',CURDATE(),CURTIME(),'placed',
+            $query="insert into customer_order(order_id,total,delivery_charge,itemtotal,date,time,status,user_id,payment_method,txnid) 
+            values('".$order_id."','".$total."','".$delivery."','".$itemtotal."',CURDATE(),CURTIME(),'placed',
             '".$_SESSION['user_id']."','online','xxxxxxx')";
             $result=$db_handle->runQuery($query);
             if($result==true){
@@ -311,7 +311,7 @@ $delivery=$total-$itemtotal;
                     $quantity=$item[$key]['quantity'];
                     $product_id=$item[$key]['product_id'];
                     $size=$item[$key]['size'];
-                    $query1="insert into order_items(id,order_id,product_id,quantity,size) values(Null,'$order_id','$product_id','$quantity','$size')";
+                    $query1="insert into order_items(order_id,product_id,quantity,size) values('$order_id','$product_id','$quantity','$size')";
                     $result1=$db_handle->runQuery($query1);
                 }
                 if($result1==true){
